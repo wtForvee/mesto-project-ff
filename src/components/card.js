@@ -1,7 +1,7 @@
-import { cardTemplate } from "../index.js";
+import { cardTemplate } from "./index.js";
 
 // @todo: Функция создания карточки
-function createCard(element, deleteCard, likeCard) {
+function createCard(element, deleteCard, likeCard, openCard) {
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
   const cardImage = cardElement.querySelector('.card__image');
   const cardTitle = cardElement.querySelector('.card__title');
@@ -14,6 +14,9 @@ function createCard(element, deleteCard, likeCard) {
   
   deleteButton.addEventListener('click', deleteCard);
   likeButton.addEventListener('click', likeCard);
+  cardImage.addEventListener('click', function() {
+    openCard(element.link, element.name);
+  });
 
   return cardElement;
 }
