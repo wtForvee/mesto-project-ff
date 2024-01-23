@@ -23,7 +23,7 @@ function closePopupEscapeKeydown(evt) {
 function closePopupOverlayClick(evt) {
     const openedPopup = document.querySelector('.popup_is-opened');
 
-    if (evt.target.classList.contains('popup')) {
+    if (evt.target === evt.currentTarget) {
         closePopup(openedPopup);
     }
 }

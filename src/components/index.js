@@ -13,7 +13,7 @@ const cardsContainer = container.querySelector('.places__list');
 const popups = document.querySelectorAll('.popup');
 
 const profileName = document.querySelector('.profile__title');
-const profileDescr = document.querySelector('.profile__description');
+const profileDescription = document.querySelector('.profile__description');
 
 const editButton = document.querySelector('.profile__edit-button');
 const popupEdit = document.querySelector('.popup_type_edit');
@@ -29,7 +29,7 @@ const cardLinkInput = document.querySelector('.popup__input_type_url');
 
 const popupImageContainer = document.querySelector('.popup_type_image');
 const popupImage = popupImageContainer.querySelector('.popup__image');
-const popupCaption = popupImageContainer.querySelector('.popup__caption');
+const popupImageCaption = popupImageContainer.querySelector('.popup__caption');
 
 // Вывести карточки на страницу
 function renderCards() {
@@ -46,7 +46,7 @@ renderCards();
 function openCard(imageLink, cardName) {
   popupImage.src = imageLink;
   popupImage.alt = cardName;
-  popupCaption.textContent = cardName;
+  popupImageCaption.textContent = cardName;
 
   openPopup(popupImageContainer);
 }
@@ -56,7 +56,7 @@ function handleEditFormSubmit(evt) {
   evt.preventDefault();
  
   profileName.textContent = nameInput.value;
-  profileDescr.textContent = jobInput.value;
+  profileDescription.textContent = jobInput.value;
 
   closePopup(popupEdit);
 
@@ -76,13 +76,15 @@ function handleCardFormSubmit(evt) {
   formCard.reset();
 }
 
-// Закрыть popup нажатием на крестик
+// Закрыть popup
 popups.forEach(function(popup) {
   const closeButton = popup.querySelector('.popup__close');
   
   closeButton.addEventListener('click', function() {
     closePopup(popup);
   });
+
+  popup.addEventListener('click', closePopupOverlayClick);
 });
 
 // Обработчик клика по кнопке редактирование профиля
@@ -98,9 +100,6 @@ addButton.addEventListener('click', function() {
   formCard.reset();
   openPopup(popupAdd);
 });
-  
-// Обработчик клика по оверлею
-document.addEventListener('click', closePopupOverlayClick);
   
 // Обработчик сабмита формы редактирования профиля
 formEdit.addEventListener('submit', handleEditFormSubmit);
