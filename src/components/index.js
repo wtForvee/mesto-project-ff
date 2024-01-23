@@ -90,7 +90,7 @@ popups.forEach(function(popup) {
 // Обработчик клика по кнопке редактирование профиля
 editButton.addEventListener('click', function() {
   nameInput.value = profileName.textContent;
-  jobInput.value = profileDescr.textContent;
+  jobInput.value = profileDescription.textContent;
 
   openPopup(popupEdit);
 });
