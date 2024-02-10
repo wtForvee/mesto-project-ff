@@ -2,11 +2,23 @@ import "../pages/index.css"
 import { openPopup, closePopup, closePopupOverlayClick } from "./modal.js";
 import { createCard, deleteCard, likeCard } from "./card.js";
 import { initialCards } from "./cards.js";
+import { enableValidation, clearValidation  } from "./validation.js";
+import { 
+  apiGetProfileInfo, 
+ } from "./api.js";
 
-// Темплейт карточки
+
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+}; 
+
 export const cardTemplate = document.querySelector('#card-template').content;
 
-// DOM узлы
 const container = document.querySelector('.places');
 const cardsContainer = container.querySelector('.places__list');
 
@@ -14,6 +26,11 @@ const popups = document.querySelectorAll('.popup');
 
 const profileName = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
+
+const avatarProfile = document.querySelector('.profile__image');
+const popupAvatar = document.querySelector('.popup_type_avatar');
+const formAvatar = popupAvatar.querySelector('.popup__form');
+const linkAvatar = formAvatar.querySelector('.popup__input_type_url');
 
 const editButton = document.querySelector('.profile__edit-button');
 const popupEdit = document.querySelector('.popup_type_edit');
@@ -31,6 +48,16 @@ const popupImageContainer = document.querySelector('.popup_type_image');
 const popupImage = popupImageContainer.querySelector('.popup__image');
 const popupImageCaption = popupImageContainer.querySelector('.popup__caption');
 
+const promise = new Promise((resolve) => {
+  resolve(apiGetProfileInfo())
+})
+
+promise
+  .then((res) => {
+    profileName.textContent = res.name;
+    profileDescription.textContent = res.about;
+  })
+
 // Вывести карточки на страницу
 function renderCards() {
   initialCards.forEach(function(element) {
@@ -42,6 +69,8 @@ function renderCards() {
 
 renderCards();
 
+
+
 // Открыть картинку выбранной карточки
 function openCard(imageLink, cardName) {
   popupImage.src = imageLink;
@@ -49,6 +78,17 @@ function openCard(imageLink, cardName) {
   popupImageCaption.textContent = cardName;
 
   openPopup(popupImageContainer);
+}
+
+// Отправка формы аватара
+function handleAvatarFormSubmit(evt) {
+  evt.preventDefault();
+ 
+  avatarProfile.style.backgroundImage = `url(${linkAvatar.value})`;
+  
+  closePopup(popupAvatar);
+
+  formAvatar.reset(); 
 }
 
 // Отправка формы профиля
@@ -83,8 +123,15 @@ popups.forEach(function(popup) {
   closeButton.addEventListener('click', function() {
     closePopup(popup);
   });
-
   popup.addEventListener('click', closePopupOverlayClick);
+});
+
+// Обработчик клика по аватару
+avatarProfile.addEventListener('click', function() {
+   linkAvatar.value = avatarProfile.style.backgroundImage
+
+  clearValidation(formAvatar, validationConfig);
+  openPopup(popupAvatar);
 });
 
 // Обработчик клика по кнопке редактирование профиля
@@ -92,17 +139,28 @@ editButton.addEventListener('click', function() {
   nameInput.value = profileName.textContent;
   jobInput.value = profileDescription.textContent;
 
+  clearValidation(formEdit, validationConfig);
   openPopup(popupEdit);
 });
 
 // Обработчик клика по кнопке добавления карточки
 addButton.addEventListener('click', function() {
   formCard.reset();
+  clearValidation(formCard, validationConfig);
   openPopup(popupAdd);
 });
+
+// Обработчик сабмита формы редактирования профиля
+formAvatar.addEventListener('submit', handleAvatarFormSubmit);
   
 // Обработчик сабмита формы редактирования профиля
 formEdit.addEventListener('submit', handleEditFormSubmit);
   
 // Обработчик сабмита формы добавления карточки
 formCard.addEventListener('submit', handleCardFormSubmit);
+
+enableValidation(validationConfig);
+clearValidation(formAvatar, validationConfig);
+clearValidation(formEdit, validationConfig);
+clearValidation(formCard, validationConfig);
+
