@@ -1,6 +1,7 @@
 // Функция, которая добавляет класс с ошибкой
 const showInputError = (formElement, inputElement, errorMessage, validationConfig) => {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+
     inputElement.classList.add(validationConfig.inputErrorClass);
     errorElement.textContent = errorMessage;
     errorElement.classList.add(validationConfig.errorClass);
@@ -9,17 +10,18 @@ const showInputError = (formElement, inputElement, errorMessage, validationConfi
   // Функция, которая удаляет класс с ошибкой
   const hideInputError = (formElement, inputElement, validationConfig) => {
     const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+    
     inputElement.classList.remove(validationConfig.inputErrorClass);
     errorElement.classList.remove(validationConfig.errorClass);
     errorElement.textContent = '';
   };
   
-  // 3 Проверяем валидность поля
+  // Проверяем валидность поля
   const checkInputValidity = (formElement, inputElement, validationConfig) => {
     if (inputElement.validity.patternMismatch) {
       inputElement.setCustomValidity(inputElement.dataset.errorMessage);
     } else {
-      inputElement.setCustomValidity("");
+      inputElement.setCustomValidity('');
   }
     
     if (!inputElement.validity.valid) {
@@ -47,13 +49,13 @@ const showInputError = (formElement, inputElement, errorMessage, validationConfi
     }
   };
   
-  // 2 Находим все input и вешаем обработчик
+  // Находим все input и вешаем обработчик
   const setEventListeners = (validationConfig, formElement) => {
     const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector));
     const popupButton = formElement.querySelector(validationConfig.submitButtonSelector);
+    
     toggleButtonState(inputList, popupButton, validationConfig);
   
-    
     inputList.forEach((inputElement) => {
       inputElement.addEventListener('input', () => {
         checkInputValidity(formElement, inputElement, validationConfig);
@@ -62,9 +64,10 @@ const showInputError = (formElement, inputElement, errorMessage, validationConfi
     });
   }; 
   
-  // 1 Находим все формы и вешаем обработчик
+  // Находим все формы и вешаем обработчик
   const enableValidation = (validationConfig) => {
     const formList = document.querySelectorAll(validationConfig.formSelector);
+
     formList.forEach((formElement) => {
       formElement.addEventListener('submit', (evt) => {
         evt.preventDefault();
@@ -73,8 +76,10 @@ const showInputError = (formElement, inputElement, errorMessage, validationConfi
     });
   };
 
+  // Очистка валидации
 const clearValidation = (formElement, validationConfig) => {
     const inputList = Array.from(formElement.querySelectorAll(validationConfig.inputSelector));
+    
     inputList.forEach((inputElement) => {
         hideInputError(formElement, inputElement, validationConfig);
     })

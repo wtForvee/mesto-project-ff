@@ -42,13 +42,13 @@
       <form class="popup__form" name="edit-avatar">
         <input
           class="popup__input popup__input_type_url"
+          id="avatar-input"
           type="url"
           name="avatar"
           placeholder="Ссылка на картинку"
           required
-          id="avatar-input"
         />
-        <span class="avatar-input-error popup__error"></span>
+        <span class="popup-input-error avatar-input-error"></span>
         <button type="submit" class="button popup__button">
           Сохранить
         </button>
@@ -143,7 +143,10 @@
     <div class="card__description">
       <h2 class="card__title">
       </h2>
-      <button type="button" class="card__like-button"></button>
+      <div class="card__like-block">
+        <button type="button" class="card__like-button"></button>
+        <span class="card__like-counter"></span>
+      </div>
     </div>
   </li>
 </template>
