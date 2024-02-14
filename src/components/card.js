@@ -1,8 +1,8 @@
-import { cardTemplate } from "./index.js";
 import { apiDeleteCard, apiLikeCard, apiUnlikeCard } from "./api.js";
 
 // Функция создания карточки
 const createCard = (profileId, cardData, deleteCard, likeUnlikeCard, openCard) => {
+  const cardTemplate = document.querySelector('#card-template').content;
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
   const cardImage = cardElement.querySelector('.card__image');
   const cardTitle = cardElement.querySelector('.card__title');

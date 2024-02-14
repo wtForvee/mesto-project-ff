@@ -10,7 +10,7 @@ import {
   apiUpdateAvatar
  } from "./api.js";
 
-let profileId
+let profileId;
 
 const validationConfig = {
   formSelector: '.popup__form',
@@ -20,8 +20,6 @@ const validationConfig = {
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__error_visible'
 }; 
-
-export const cardTemplate = document.querySelector('#card-template').content;
 
 const container = document.querySelector('.places');
 const cardsContainer = container.querySelector('.places__list');
@@ -96,8 +94,6 @@ function handleAvatarFormSubmit(evt) {
     })
     .catch((err) => console.log(err))
     .finally(() => buttonSaveAvatar.textContent = saveTextButton);
-  
-  formAvatar.reset(); 
 }
 
 // Редактировать профиль
@@ -117,8 +113,6 @@ function handleEditFormSubmit(evt) {
     })
     .catch((err) => console.log(err))
     .finally(() => buttonSaveEditProfile.textContent = saveTextButton);
-
-  formEditProfile.reset();
 }
 
 // Добавить карточку
@@ -136,12 +130,11 @@ function handleCardFormSubmit(evt) {
       cardsContainer.prepend(newCard);
         
       closePopup(popupAddCard);
-      
+
+      formAddCard.reset();
     })
     .catch((err) => console.log(err))
     .finally(() => buttonSaveAddCard.textContent = saveTextButton);
-
-  formAddCard.reset();
 }
 
 // Закрыть popup
@@ -157,8 +150,8 @@ popups.forEach(function(popup) {
 
 // Обработчик клика по аватару
 profileAvatar.addEventListener('click', function() {
-  linkAvatar.value = profileAvatar.style.backgroundImage
-
+  formAvatar.reset();
+  
   clearValidation(formAvatar, validationConfig);
   openPopup(popupAvatar);
 });
